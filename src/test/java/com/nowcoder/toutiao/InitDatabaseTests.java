@@ -1,9 +1,12 @@
 package com.nowcoder.toutiao;
 
+import com.nowcoder.toutiao.dao.LoginTicketDAO;
 import com.nowcoder.toutiao.dao.NewsDAO;
 import com.nowcoder.toutiao.dao.UserDAO;
+import com.nowcoder.toutiao.model.LoginTicket;
 import com.nowcoder.toutiao.model.News;
 import com.nowcoder.toutiao.model.User;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -21,6 +25,8 @@ public class InitDatabaseTests {
     UserDAO userDAO;
     @Autowired
     NewsDAO newsDAO;
+    @Autowired
+    LoginTicketDAO loginTicketDAO;
 
     Random random = new Random();
     @Test
@@ -61,7 +67,21 @@ public class InitDatabaseTests {
         System.out.println("===================");
     }
 
+    @Test
+    public void testLoginTicket(){
+        LoginTicket loginTicket = new LoginTicket();
+        Date date = new Date();
+        date.setTime(new Date().getTime()+1000*3600*24);
+        loginTicket.setExpired(date);
+        loginTicket.setStatus(0);
+        loginTicket.setTicket(UUID.randomUUID().toString().replace("-",""));
+        loginTicket.setUserId(1);
+        loginTicketDAO.addTicket(loginTicket);
+        loginTicketDAO.updateStatus(loginTicket.getTicket(),2);
 
+        Assert.assertEquals(1,loginTicketDAO.selectByTicket(loginTicket.getTicket()).getUserId());
+        Assert.assertEquals(2,loginTicketDAO.selectByTicket(loginTicket.getTicket()).getStatus());
+    }
 
 
 }
