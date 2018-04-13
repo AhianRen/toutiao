@@ -34,9 +34,12 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li class=""><a href="http://nowcoder.com/explore">发现</a></li>
-
-                    <li><a href="http://nowcoder.com/signin">站内信</a></li>
-                    <li class="js-login"><a href="javascript:void(0);">登陆</a></li>
+                    <#if user?exists>
+                        <li class="js-login"><a href="javascript:void(0);">${user.name}</a></li>
+                    <#else>
+                        <li><a href="http://nowcoder.com/signin">站内信</a></li>
+                        <li class="js-login"><a href="javascript:void(0);">登陆</a></li>
+                    </#if>
                 </ul>
 
             </nav>
@@ -220,7 +223,7 @@
     </div>
   </div>
 
-    <#--<script>window.loginpop = $!{pop};</script>-->
+    <script>window.loginpop = ${pop!};</script>
     <script type="text/javascript" src="/scripts/jquery.js"></script>
     <script type="text/javascript" src="/scripts/main/base/base.js"></script>
     <script type="text/javascript" src="/scripts/main/base/util.js"></script>

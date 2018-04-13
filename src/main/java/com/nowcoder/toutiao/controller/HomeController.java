@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,10 @@ public class HomeController {
         return "home";
     }
     @RequestMapping(path = {"/user/{userId}"},method = {RequestMethod.GET,RequestMethod.POST})
-    public String userIndex(Model model,@PathVariable("userId") int userId ){
+    public String userIndex(Model model,@PathVariable("userId") int userId,
+                                        @RequestParam(value = "pop",defaultValue = "0") int pop){
         model.addAttribute("vos",getNews(userId,0,10));
+       model.addAttribute("pop", pop);
         return "home";
     }
 
