@@ -33,11 +33,15 @@
             <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li class=""><a href="http://nowcoder.com/explore">发现</a></li>
+                    <#if user?exists>
+                        <li class="js-login"><a href="javascript:void(0);">${user.name}</a></li>
+                    <#else>
+                        <li class=""><a href="http://nowcoder.com/explore">发现</a></li>
+                        <li><a href="http://nowcoder.com/signin">站内信</a></li>
+                        <li class="js-login"><a href="javascript:void(0);">登陆</a></li>
+                    </#if>
 
-                    <li><a href="http://nowcoder.com/signin">站内信</a></li>
-                    <li class="js-login"><a href="javascript:void(0);">登陆</a></li>
-                </ul>
+                    </ul>
 
             </nav>
         </div>
