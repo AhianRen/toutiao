@@ -2,7 +2,7 @@ package com.nowcoder.toutiao.interceptor;
 
 import com.nowcoder.toutiao.dao.LoginTicketDAO;
 import com.nowcoder.toutiao.dao.UserDAO;
-import com.nowcoder.toutiao.model.HostHold;
+import com.nowcoder.toutiao.model.HostHolder;
 import com.nowcoder.toutiao.model.LoginTicket;
 import com.nowcoder.toutiao.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class PassportInterceptor implements HandlerInterceptor{
     @Autowired
     private UserDAO userDAO;
     @Autowired
-    private HostHold hostHold;
+    private HostHolder hostHolder;
 
 
     @Override
@@ -43,7 +43,7 @@ public class PassportInterceptor implements HandlerInterceptor{
             LoginTicket loginTicket = loginTicketDAO.selectByTicket(ticket);
             if (loginTicket != null && loginTicket.getExpired().after(new Date()) && loginTicket.getStatus() == 0){
                 User user = userDAO.selectUserById(loginTicket.getUserId());
-                hostHold.setUsers(user);
+                hostHolder.setUsers(user);
             }
         }
         return true;
@@ -51,14 +51,14 @@ public class PassportInterceptor implements HandlerInterceptor{
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
-       if (modelAndView != null && hostHold.getUser() != null){
-           modelAndView.addObject(hostHold.getUser());
+       if (modelAndView != null && hostHolder.getUser() != null){
+           modelAndView.addObject(hostHolder.getUser());
        }
 
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
-        hostHold.clear();
+        hostHolder.clear();
     }
 }

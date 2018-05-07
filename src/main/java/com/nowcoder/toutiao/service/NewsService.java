@@ -38,4 +38,14 @@ public class NewsService {
                 StandardCopyOption.REPLACE_EXISTING);
         return ToutiaoUtils.TOUTIAO_DOMAIN + "image?name=" + fileName;
     }
+
+    public News getById(int newsId) {
+        return newsDAO.getById(newsId);
+    }
+
+    public int addNews(News news){
+        return newsDAO.addNews(news);
+    }
+
+
 }

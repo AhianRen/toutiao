@@ -20,6 +20,10 @@
         order by created_date desc
         limit #{offset},#{limit}
     </select>
+    <select id="getById" resultType="news" parameterType="int" >
+        SELECT <include refid="SELECT_FIELDS"/> FROM news
+        WHERE id = #{newsId}
+    </select>
 
 
 </mapper>

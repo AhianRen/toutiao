@@ -11,4 +11,7 @@ public interface NewsDAO {
 
     int addNews(News news);
     List<News> selectByUserIdAndOffset(@Param("userId") int id,@Param("offset") int offset,@Param("limit") int limit);
+
+    News getById(int newsId);
+
 }
