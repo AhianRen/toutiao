@@ -1,7 +1,7 @@
 package com.nowcoder.toutiao.controller;
 
 import com.nowcoder.toutiao.model.News;
-import com.nowcoder.toutiao.model.ViewObjiect;
+import com.nowcoder.toutiao.model.ViewObject;
 import com.nowcoder.toutiao.service.NewsService;
 import com.nowcoder.toutiao.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,11 @@ public class HomeController {
     @Autowired
     UserService userService;
 
-    private List<ViewObjiect> getNews(int userId,int offset,int limit){
+    private List<ViewObject> getNews(int userId, int offset, int limit){
         List<News> newsList = newsService.getLatestNews(userId,offset,limit);
-        List<ViewObjiect> vos = new ArrayList<>();
+        List<ViewObject> vos = new ArrayList<>();
         for (News news : newsList){
-            ViewObjiect vo = new ViewObjiect();
+            ViewObject vo = new ViewObject();
             vo.set("news",news);
             vo.set("user",userService.getUser(news.getUserId()));
             vos.add(vo);

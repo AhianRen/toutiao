@@ -99,9 +99,9 @@ public class NewsController {
         News news = newsService.getById(newsId);
         if (news != null){
             List<Comment> comments = commentService.getCommentsByEntity(newsId, EntityType.ENTITY_NEWS);
-            List<ViewObjiect> commentVOs = new ArrayList<ViewObjiect>();
+            List<ViewObject> commentVOs = new ArrayList<ViewObject>();
             for (Comment comment : comments){
-                ViewObjiect vo = new ViewObjiect();
+                ViewObject vo = new ViewObject();
                 vo.set("comment",comment);
                 vo.set("user",userService.getUser(comment.getUserId()));
                 commentVOs.add(vo);

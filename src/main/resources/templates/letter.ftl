@@ -1,4 +1,4 @@
-#parse("header.html")
+<#include "header.ftl">
     <div id="main">
         <div class="container">
             <ul class="letter-list">
@@ -83,4 +83,4 @@
           })
         </script>
     </div>
-#parse("footer.html")
+<#include "footer.ftl">

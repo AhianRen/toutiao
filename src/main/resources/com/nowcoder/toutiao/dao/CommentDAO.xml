@@ -16,5 +16,6 @@
     <select id="selectComment" resultType="comment">
         SELECT <include refid="SELECT_FIELDS"/> FROM <include refid="TABLE_NAME"/>
         WHERE entity_id = #{entityId} and entity_type = #{entityType}
+        order by id desc
     </select>
 </mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nowcoder.toutiao.dao.MessageDAO">
+    <sql id="TABLE_NAME">message</sql>
+    <sql id="INSERT_FIELDS">from_id, to_id, content, has_read, conversation_id, created_date</sql>
+    <sql id="SELECT_FIELDS">id, from_id, to_id, content, has_read, conversation_id, created_date</sql>
+ 
+    <insert id="addMessage" parameterType="message" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO <include refid="TABLE_NAME"/> (<include refid="INSERT_FIELDS"/>)
+        VALUES (#{fromId},#{toId},#{content},#{hasRead},#{conversationId},#{createdDate})
+
+    </insert>
+    <select id="getConversationDetail" resultType="message">
+        SELECT <include refid="SELECT_FIELDS"/> FROM <include refid="TABLE_NAME"/>
+        WHERE conversation_id = #{conversationId} order by id desc limit #{offset},#{limit}
+    </select>
+</mapper>
