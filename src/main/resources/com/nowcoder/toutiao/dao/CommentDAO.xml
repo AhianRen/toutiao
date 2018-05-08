@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nowcoder.toutiao.dao.CommentDAO">
+    <sql id="TABLE_NAME">comment</sql>
+    <sql id="INSERT_FIELDS">user_id, content, created_date, entity_id, entity_type, status</sql>
+    <sql id="SELECT_FIELDS">id,user_id, content, created_date, entity_id, entity_type, status</sql>
+    <insert id="addComment" parameterType="comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO <include refid="TABLE_NAME"/> (<include refid="INSERT_FIELDS"/>)
+        VALUES (#{userId},#{content},#{createdDate},#{entityId},#{entityType},#{status})
+
+    </insert>
+    <select id="getCommentCount" resultType="int">
+        SELECT COUNT(id) FROM <include refid="TABLE_NAME"/>
+        WHERE entity_id = #{entityId} and entity_type = #{entityType}
+    </select>
+    <select id="selectComment" resultType="comment">
+        SELECT <include refid="SELECT_FIELDS"/> FROM <include refid="TABLE_NAME"/>
+        WHERE entity_id = #{entityId} and entity_type = #{entityType}
+    </select>
+</mapper>

@@ -14,4 +14,6 @@ public interface NewsDAO {
 
     News getById(int newsId);
 
+    int updateCommentCount(@Param("newsId") int newsId, @Param("count") int count);
+
 }

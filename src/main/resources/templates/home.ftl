@@ -83,7 +83,7 @@
                                 <button class="click-dislike down" aria-pressed="true" title="反对"><i class="vote-arrow"></i>
                                 </button>
                             </div>
-                            <div class="content" data-url="/news/${vo.news.id!}">
+                            <div class="content"  onclick="window.location.href='/news/${vo.news.id!}';">
                                 <div >
                                     <img class="content-img" src="${vo.news.image}" alt="">
                                 </div>

@@ -47,5 +47,7 @@ public class NewsService {
         return newsDAO.addNews(news);
     }
 
-
+    public int updateCommentCount(int newsId,int count){
+        return newsDAO.updateCommentCount(newsId,count);
+    }
 }

@@ -8,6 +8,9 @@
       INSERT INTO news(<include refid="INSERT_FIELDS"/>)
       VALUES (#{title},#{link},#{image},#{likeCount},#{commentCount},#{createdDate},#{userId})
     </insert>
+    <update id="updateCommentCount" parameterType="int">
+        UPDATE news SET comment_count = #{count} where id = #{newsId}
+    </update>
 
 
     <select id="selectByUserIdAndOffset" resultType="news">

@@ -84,17 +84,17 @@
 
             <div id="comments" class="comments">
 
-                #foreach($commentvo in $comments)
-                <div class="media">
-                    <a class="media-left" href="http://nowcoder.com/u/210176">
-                        <img src="$!{commentvo.user.headUrl}">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading"> <small class="date">$date.format('yyyy-MM-dd HH:mm:ss', $!{commentvo.comment.createdDate})</small></h4>
-                        <div>$!{commentvo.comment.content}</div>
+                <#list comments as commentvo>
+                    <div class="media">
+                        <a class="media-left" href="http://nowcoder.com/u/210176">
+                            <img src="${commentvo.user.headUrl!}">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading"> <small class="date">${commentvo.comment.createdDate?string("yyyy-MM-dd HH:mm:ss")!}</small></h4>
+                            <div>${commentvo.comment.content!}</div>
+                        </div>
                     </div>
-                </div>
-                #end
+                </#list>
             </div>
 
         </div>

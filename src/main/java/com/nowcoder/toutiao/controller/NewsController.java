@@ -1,8 +1,9 @@
 package com.nowcoder.toutiao.controller;
 
-import com.nowcoder.toutiao.model.HostHolder;
-import com.nowcoder.toutiao.model.News;
+import com.nowcoder.toutiao.model.*;
+import com.nowcoder.toutiao.service.CommentService;
 import com.nowcoder.toutiao.service.NewsService;
+import com.nowcoder.toutiao.service.UserService;
 import com.nowcoder.toutiao.utils.ToutiaoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class NewsController {
@@ -27,6 +30,29 @@ public class NewsController {
     private NewsService newsService;
     @Autowired
     private HostHolder hostHolder;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CommentService commentService;
+
+    @RequestMapping(path = {"/addComment"},method = {RequestMethod.POST})
+    public String addComment(@RequestParam("newsId") int newsId,
+                            @RequestParam("content") String content){
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setCreatedDate(new Date());
+        comment.setStatus(0);
+        comment.setUserId(hostHolder.getUser().getId());
+        comment.setEntityId(newsId);
+        comment.setEntityType(EntityType.ENTITY_NEWS);
+
+        commentService.addComment(comment);
+
+        int commentCount = commentService.getCommentCount(newsId, EntityType.ENTITY_NEWS);
+        newsService.updateCommentCount(newsId,commentCount);
+        return "redirect:/news/" + newsId;
+
+    }
 
     @RequestMapping(path = {"/user/addNews/"},method = {RequestMethod.POST})
     @ResponseBody
@@ -71,7 +97,19 @@ public class NewsController {
     @RequestMapping(path = {"/news/{newsId}"},method = {RequestMethod.GET,RequestMethod.POST})
     public String newsDetail (@PathVariable("newsId") int newsId, Model model){
         News news = newsService.getById(newsId);
+        if (news != null){
+            List<Comment> comments = commentService.getCommentsByEntity(newsId, EntityType.ENTITY_NEWS);
+            List<ViewObjiect> commentVOs = new ArrayList<ViewObjiect>();
+            for (Comment comment : comments){
+                ViewObjiect vo = new ViewObjiect();
+                vo.set("comment",comment);
+                vo.set("user",userService.getUser(comment.getUserId()));
+                commentVOs.add(vo);
+            }
+            model.addAttribute("comments",commentVOs);
+        }
         model.addAttribute(news);
+        model.addAttribute("owner", userService.getUser(news.getUserId()));
         return "detail";
     }
 
