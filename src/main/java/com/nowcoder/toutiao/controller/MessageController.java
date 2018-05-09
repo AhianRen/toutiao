@@ -1,5 +1,6 @@
 package com.nowcoder.toutiao.controller;
 
+import com.nowcoder.toutiao.model.HostHolder;
 import com.nowcoder.toutiao.model.Message;
 import com.nowcoder.toutiao.model.User;
 import com.nowcoder.toutiao.model.ViewObject;
@@ -25,6 +26,27 @@ public class MessageController {
     private MessageService messageService;
     @Autowired
     private UserService userService;
+    @Autowired
+    HostHolder hostHolder;
+
+    @RequestMapping(path = {"/msg/list"},method = {RequestMethod.GET})
+    public String getConversationList(Model model){
+
+        List<Message> conversationList = messageService.getConversationList(hostHolder.getUser().getId(), 0, 10);
+        List<ViewObject> conversations = new ArrayList<>();
+        for (Message message : conversationList){
+            ViewObject vo = new ViewObject();
+            vo.set("conversation",message);
+            User user = userService.getUser(message.getFromId());
+            vo.set("user",user);
+            vo.set("totalCount",message.getId());
+            vo.set("unreadCount",messageService.getUnreadCount(user.getId(),message.getConversationId()));
+            conversations.add(vo);
+        }
+        model.addAttribute("conversations",conversations);
+        return "letter";
+    }
+
 
     @RequestMapping(path = {"/msg/detail"},method = {RequestMethod.GET})
     public String conversationDetail(Model model,@RequestParam("conversationId") String conversationId){

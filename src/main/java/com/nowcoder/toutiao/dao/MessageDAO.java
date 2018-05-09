@@ -12,5 +12,7 @@ public interface MessageDAO {
 
     List<Message> getConversationDetail(@Param("conversationId") String conversationId, @Param("offset") int offset, @Param("limit") int limit);
 
+    List<Message> getConversationList(@Param("userId") int userId,@Param("offset") int offset, @Param("limit") int limit);
 
+    int getUnreadCount(@Param("userId") int userId, @Param("conversationId") String conversationId);
 }

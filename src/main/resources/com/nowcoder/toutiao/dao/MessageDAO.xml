@@ -14,4 +14,14 @@
         SELECT <include refid="SELECT_FIELDS"/> FROM <include refid="TABLE_NAME"/>
         WHERE conversation_id = #{conversationId} order by id desc limit #{offset},#{limit}
     </select>
+    <select id="getConversationList" resultType="Message">
+        SELECT <include refid="INSERT_FIELDS"/> ,COUNT(id) as id
+        FROM (SELECT * FROM <include refid="TABLE_NAME"/>
+        WHERE from_id = #{userId} or to_id = #{userId} order by id desc) tt
+        group by conversation_id order by id desc
+    </select>
+    <select id="getUnreadCount" resultType="int">
+        SELECT COUNT(id) FROM <include refid="TABLE_NAME"/>
+        WHERE to_id = #{userId} and conversation_id = #{conversationId}
+    </select>
 </mapper>

@@ -20,4 +20,11 @@ public class MessageService {
         return messageDAO.getConversationDetail(conversationId,offset,limit);
     }
 
+    public List<Message> getConversationList(int userId,int offset,int limit){
+        return messageDAO.getConversationList(userId,offset,limit);
+    }
+
+    public int getUnreadCount(int userId, String conversationId) {
+        return messageDAO.getUnreadCount(userId,conversationId);
+    }
 }
