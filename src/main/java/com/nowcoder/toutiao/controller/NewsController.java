@@ -2,6 +2,7 @@ package com.nowcoder.toutiao.controller;
 
 import com.nowcoder.toutiao.model.*;
 import com.nowcoder.toutiao.service.CommentService;
+import com.nowcoder.toutiao.service.LikeService;
 import com.nowcoder.toutiao.service.NewsService;
 import com.nowcoder.toutiao.service.UserService;
 import com.nowcoder.toutiao.utils.ToutiaoUtils;
@@ -34,6 +35,8 @@ public class NewsController {
     private UserService userService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private LikeService likeService;
 
     @RequestMapping(path = {"/addComment"},method = {RequestMethod.POST})
     public String addComment(@RequestParam("newsId") int newsId,
@@ -100,6 +103,12 @@ public class NewsController {
         if (news != null){
             List<Comment> comments = commentService.getCommentsByEntity(newsId, EntityType.ENTITY_NEWS);
             List<ViewObject> commentVOs = new ArrayList<ViewObject>();
+            int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId():0;
+            if(localUserId == 0){
+               model.addAttribute("like",0);
+            }else {
+                model.addAttribute("like",likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS,news.getId()));
+            }
             for (Comment comment : comments){
                 ViewObject vo = new ViewObject();
                 vo.set("comment",comment);

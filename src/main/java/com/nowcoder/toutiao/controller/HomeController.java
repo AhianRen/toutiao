@@ -1,7 +1,10 @@
 package com.nowcoder.toutiao.controller;
 
+import com.nowcoder.toutiao.model.EntityType;
+import com.nowcoder.toutiao.model.HostHolder;
 import com.nowcoder.toutiao.model.News;
 import com.nowcoder.toutiao.model.ViewObject;
+import com.nowcoder.toutiao.service.LikeService;
 import com.nowcoder.toutiao.service.NewsService;
 import com.nowcoder.toutiao.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +24,24 @@ public class HomeController {
     NewsService newsService;
     @Autowired
     UserService userService;
+    @Autowired
+    private HostHolder hostHolder;
+    @Autowired
+    private LikeService likeService;
 
     private List<ViewObject> getNews(int userId, int offset, int limit){
         List<News> newsList = newsService.getLatestNews(userId,offset,limit);
+        int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId():0;
         List<ViewObject> vos = new ArrayList<>();
         for (News news : newsList){
             ViewObject vo = new ViewObject();
             vo.set("news",news);
             vo.set("user",userService.getUser(news.getUserId()));
+            if(localUserId == 0){
+                vo.set("like",0);
+            }else {
+                vo.set("like",likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS,news.getId()));
+            }
             vos.add(vo);
         }
         return vos;

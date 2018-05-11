@@ -11,6 +11,9 @@
     <update id="updateCommentCount" parameterType="int">
         UPDATE news SET comment_count = #{count} where id = #{newsId}
     </update>
+    <update id="updateLikeCount">
+        UPDATE news SET like_count = #{count} where id = #{newsId}
+    </update>
 
 
     <select id="selectByUserIdAndOffset" resultType="news">

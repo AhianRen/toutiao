@@ -79,9 +79,16 @@
                          </#if>
                         <div class="post">
                             <div class="votebar">
-                                <button class="click-like up" aria-pressed="false" title="赞同"><i class="vote-arrow"></i><span class="count">${vo.news.likeCount}</span></button>
-                                <button class="click-dislike down" aria-pressed="true" title="反对"><i class="vote-arrow"></i>
-                                </button>
+                                <#if (vo.like>0)>
+                                    <button class="click-like up pressed" data-id="${vo.news.id!}" title="赞同"><i class="vote-arrow"></i><span class="count">${vo.news.likeCount!}</span></button>
+                                <#else>
+                                    <button class="click-like up " data-id="${vo.news.id!}" title="赞同"><i class="vote-arrow"></i><span class="count">${vo.news.likeCount!}</span></button>
+                                </#if>
+                                <#if (vo.like<0)>
+                                    <button class="click-dislike down pressed"  data-id="${vo.news.id!}" title="反对"><i class="vote-arrow"></i></button>
+                                <#else >
+                                    <button class="click-dislike down"  data-id="${vo.news.id!}" title="反对"><i class="vote-arrow"></i></button>
+                                </#if>
                             </div>
                             <div class="content"  onclick="window.location.href='/news/${vo.news.id!}';">
                                 <div >
@@ -143,5 +150,6 @@
         window.loginpop = ${pop!}
     </script>
 </#if>
+
 
 <#include "footer.ftl">
