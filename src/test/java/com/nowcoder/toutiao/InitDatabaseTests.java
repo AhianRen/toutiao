@@ -11,8 +11,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import redis.clients.jedis.Jedis;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -105,5 +107,13 @@ public class InitDatabaseTests {
         System.out.println("===============================================");
         System.out.println(commentDAO.getCommentCount(1,EntityType.ENTITY_NEWS));
         System.out.println(commentDAO.selectComment(2,EntityType.ENTITY_NEWS));
+    }
+
+    @Test
+    public void testRedis(){
+        Jedis jedis = new Jedis();
+       // jedis.lpush("list1","xxx","xxx","yyy","zzz");
+        List l = jedis.brpop(10,"list1");
+        System.out.println(l.toString());
     }
 }
